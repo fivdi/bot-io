@@ -1,0 +1,40 @@
+/dts-v1/;
+/plugin/;
+
+/{
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+  part-number = "{{ partNumber }}";
+  version = "{{ version }}";
+
+  exclusive-use =
+    "{{ header }}",
+    "{{ hardwareIp }}";
+
+  fragment@0 {
+    target = <&am33xx_pinmux>;
+    __overlay__ {
+      {{ name }}_pins: pinmux_{{ name }}_pins {
+        pinctrl-single,pins = <
+          {{ muxOffset }} {{ muxValue }}
+        >;
+      };
+    };
+  };
+
+  fragment@1 {
+    target = <&ocp>;
+    __overlay__ {
+      {{ name }} {
+        compatible = "pwm_test";
+        pwms = <&{{ module }} {{ channel }} {{ period }} {{ polarity }}>;
+        pwm-names = "{{ name }}";
+        pinctrl-names = "default";
+        pinctrl-0 = <&{{ name }}_pins>;
+        enabled = <{{ enabled }}>;
+        duty = <{{ duty }}>;
+        status = "okay";
+      };
+    };
+  };
+};
+

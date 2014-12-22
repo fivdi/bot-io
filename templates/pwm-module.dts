@@ -1,0 +1,16 @@
+/dts-v1/;
+/plugin/;
+
+/{
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+  part-number = "{{ partNumber }}";
+  version = "{{ version }}";
+
+  fragment@0 {
+    target = <&{{ module }}>;
+    __overlay__ {
+      status = "okay";
+    };
+  };
+};
+

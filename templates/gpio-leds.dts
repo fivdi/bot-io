@@ -1,0 +1,42 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+  part-number = "{{ partNumber }}";
+  version = "{{ version }}";
+
+  exclusive-use =
+    "{{ header }}",
+    "gpio{{ gpioBank }}_{{ gpioOffset }}";
+
+  fragment@0 {
+    target = <&am33xx_pinmux>;
+    __overlay__ {
+      {{ name }}_pins: pinmux_{{ name }}_pins {
+        pinctrl-single,pins = <
+          {{ muxOffset }} {{ muxValue }}
+        >;
+      };
+    };
+  };
+
+  fragment@1 {
+    target = <&ocp>;
+    __overlay__ {
+      {{ name }} {
+        compatible = "gpio-leds";
+        pinctrl-names = "default";
+        pinctrl-0 = <&{{ name }}_pins>;
+
+        {{ name }}_gpio {
+          label = "{{ label }}";
+          gpios = <&gpio{{ gpioBankPlusOne }} {{ gpioOffset }} {{ isActiveLow }}>;
+          linux,default-trigger = "none";
+          default-state = "off";
+        };
+      };
+    };
+  };
+};
+

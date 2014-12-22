@@ -1,0 +1,54 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+  part-number = "{{ partNumber }}";
+  version = "{{ version }}";
+
+  exclusive-use =
+    "{{ header }}",
+    "gpio{{ gpioBank }}_{{ gpioOffset }}";
+
+  fragment@0 {
+    target = <&am33xx_pinmux>;
+    __overlay__ {
+      {{ name }}_default_pin: pinmux_{{ name }}_default_pin {
+        pinctrl-single,pins = <
+          {{ muxOffset }} {{ muxValue }}
+        >;
+      };
+      {{ name }}_pin: pinmux_{{ name }}_pin {
+        pinctrl-single,pins = <
+          {{ muxOffset }} 0x2f
+        >;
+      };
+      {{ name }}_pu_pin: pinmux_{{ name }}_pu_pin {
+        pinctrl-single,pins = <
+          {{ muxOffset }} 0x37
+        >;
+      };
+      {{ name }}_pd_pin: pinmux_{{ name }}_pd_pin {
+        pinctrl-single,pins = <
+          {{ muxOffset }} 0x27
+        >;
+      };
+    };
+  };
+
+  fragment@1 {
+    target = <&ocp>;
+    __overlay__ {
+      {{ name }} {
+        compatible = "bone-pinmux-helper";
+        status = "okay";
+        pinctrl-names = "default", "gpio", "gpio_pu", "gpio_pd";
+        pinctrl-0 = <&{{ name }}_default_pin>;
+        pinctrl-1 = <&{{ name }}_pin>;
+        pinctrl-2 = <&{{ name }}_pu_pin>;
+        pinctrl-3 = <&{{ name }}_pd_pin>;
+      };
+    };
+  };
+};
+

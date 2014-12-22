@@ -1,0 +1,38 @@
+{
+  "name": "bot-io",
+  "description": "ADC, GPIO, PWM, UARTs, and more on the BeagleBone Black.",
+  "version": "0.1.0",
+  "author": "fivdi",
+  "keywords": [
+    "beaglebone",
+    "nodebots",
+    "adc",
+    "analog",
+    "gpio",
+    "pwm",
+    "button",
+    "led",
+    "interrupt",
+    "uart",
+    "serial"
+  ],
+  "repository": "fivdi/bot-io",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "~1.4.1",
+    "bindings": "~1.2.1",
+    "duplexify": "~3.2.0",
+    "lodash": "~2.4.1",
+    "glob": "~4.3.2",
+    "epoll": "~0.1.10"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "gypfile": true
+}
+

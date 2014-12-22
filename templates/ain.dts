@@ -1,0 +1,27 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+  part-number = "{{ partNumber }}";
+  version = "{{ version }}";
+
+  exclusive-use =
+    "{{ header }}";
+
+  fragment@0 {
+    target = <&ocp>;
+    __overlay__ {
+      #address-cells = <1>;
+      #size-cells = <1>;
+
+      {{ name }} {
+        compatible = "bone-iio-helper";
+        vsense-name  = "{{ vsenseName }}";
+        vsense-scale = <{{ vsenseScale }}>;
+        status = "okay";
+      };
+    };
+  };
+};
+
