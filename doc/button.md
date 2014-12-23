@@ -16,11 +16,11 @@ time the button is pressed or released.
 ```js
 var bot = require('bot-io'),
   button = new bot.Button(bot.pins.p9_24),
-  pressd = 0,
+  pressed = 0,
   released = 0;
 
 function printInfo() {
-  console.log('pressed: ' + pressed + ', released: ' + 'released');
+  console.log('pressed: ' + pressed + ', released: ' + released);
 }
 
 button.on('pressed', function () {
