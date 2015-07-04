@@ -9,8 +9,6 @@
 
 #include "serialutil.h"
 
-// TODO - There are lots of NanThrowError that should have return!!!
-
 static const char PARITY_NONE[] = "none";
 static const char PARITY_ODD[] = "odd";
 static const char PARITY_EVEN[] = "even";
@@ -28,7 +26,7 @@ NAN_METHOD(GetBaudRate) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   speed_t baudRate = cfgetospeed(&tio);
@@ -50,19 +48,19 @@ NAN_METHOD(SetBaudRate) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   if (cfsetospeed(&tio, baudRate)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   if (cfsetispeed(&tio, baudRate)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();
@@ -81,7 +79,7 @@ NAN_METHOD(GetCharacterSize) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   int size = 0;
@@ -124,7 +122,7 @@ NAN_METHOD(SetCharacterSize) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   tio.c_cflag &= ~CSIZE;
@@ -145,7 +143,7 @@ NAN_METHOD(SetCharacterSize) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();
@@ -164,7 +162,7 @@ NAN_METHOD(GetParity) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   if (tio.c_cflag & PARENB) {
@@ -191,7 +189,7 @@ NAN_METHOD(SetParity) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   if (strcmp(*type, PARITY_NONE) == 0) {
@@ -209,7 +207,7 @@ NAN_METHOD(SetParity) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();
@@ -228,7 +226,7 @@ NAN_METHOD(GetStopBits) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   int count = 1;
@@ -260,7 +258,7 @@ NAN_METHOD(SetStopBits) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   switch (count) {
@@ -273,7 +271,7 @@ NAN_METHOD(SetStopBits) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();
@@ -292,13 +290,13 @@ NAN_METHOD(SetRawMode) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   cfmakeraw(&tio);
 
   if (tcsetattr(fd, TCSADRAIN, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();
@@ -318,7 +316,7 @@ NAN_METHOD(SetCanonical) {
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   if (canonical) {
@@ -328,7 +326,7 @@ NAN_METHOD(SetCanonical) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();
@@ -347,7 +345,7 @@ NAN_METHOD(FakeInput) {
   char ch = args[1]->Int32Value();
 
   if (ioctl(fd, TIOCSTI, &ch)) {
-    NanThrowError(strerror(errno), errno);
+    return NanThrowError(strerror(errno), errno);
   }
 
   NanReturnUndefined();

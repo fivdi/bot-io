@@ -1,6 +1,7 @@
 ## bot-io
 
-ADC, GPIO, PWM, UARTs, and more on the BeagleBone Black.
+ADC, GPIO, PWM, UARTs, and more with **io.js** or **Node.js** on the BeagleBone
+Black.
 
 ## Installation
 
