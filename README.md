@@ -151,6 +151,8 @@ ain.once('ready', function () {
 
 ### Additional Information
 
-Tested with Debian Image 2014-09-03 and Node.js v0.10.25 on the BeagleBone Black
-rev. A5C.
+Tested on a BeagleBone Black rev. A5C with
+
+ * Debian Image 2014-09-03 and Node.js v0.10.25
+ * Debian Image 2015-03-01 and io.js v2.3.2
 
