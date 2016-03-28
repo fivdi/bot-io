@@ -21,10 +21,10 @@
   "dependencies": {
     "nan": "~1.8.4",
     "bindings": "~1.2.1",
-    "duplexify": "~3.4.2",
-    "lodash": "~3.10.0",
-    "glob": "~5.0.13",
-    "epoll": "~0.1.13"
+    "duplexify": "~3.4.3",
+    "lodash": "~4.6.1",
+    "glob": "~7.0.3",
+    "epoll": "~0.1.17"
   },
   "engines": {
     "node": ">=0.10.0"
