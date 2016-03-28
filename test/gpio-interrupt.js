@@ -4,31 +4,33 @@ var assert = require('assert'),
   bot = require('../'),
   pullTypes = bot.pullTypes,
   Gpio = bot.Gpio,
-  gpio = new Gpio(bot.pins.p8_07, {
+  output = new Gpio(bot.pins.p8_15),
+  input = new Gpio(bot.pins.p8_16, {
+    direction: Gpio.IN,
     edge: Gpio.BOTH
   });
 
-gpio.once('ready', function () {
-  gpio.on('falling', function (val) {
+bot.once('ready', [output, input], function () {
+  input.on('falling', function (val) {
     console.log('falling ' + val);
   });
-  gpio.on('rising', function (val) {
+  input.on('rising', function (val) {
     console.log('rising ' + val);
   });
-  gpio.on('both', function (val) {
+  input.on('both', function (val) {
     console.log('both ' + val);
   });
   setTimeout(function () {
-    gpio.value(1);
+    output.value(1);
   }, 1000);
   setTimeout(function () {
-    gpio.value(0);
+    output.value(0);
   }, 2000);
   setTimeout(function () {
-    gpio.value(1);
+    output.value(1);
   }, 3000);
   setTimeout(function () {
-    gpio.edge(Gpio.NONE);
+    input.edge(Gpio.NONE);
   }, 4000);
 });
 

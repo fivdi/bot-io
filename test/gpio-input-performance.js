@@ -1,7 +1,7 @@
 'use strict';
 
 var bot = require('../'),
-  button = new bot.Gpio(bot.pins.p8_07, {direction: bot.Gpio.IN});
+  button = new bot.Gpio(bot.pins.p8_14, {direction: bot.Gpio.IN});
 
 function test() {
   var time = process.hrtime(),

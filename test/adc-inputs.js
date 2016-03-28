@@ -13,7 +13,7 @@ var bot = require('../'),
 
 analogInputs.forEach(function (ain) {
   ain.once('ready', function () {
-    console.log(ain.name + ' - ' + ain.pin.ain.vsenseName + ' - ' + ain.rawValue() + ' - ' + ain.value());
+    console.log(ain.name + ' - ' + ain.pin.ain.channel + ' - ' + ain.rawValue() + ' - ' + ain.value());
   });
 });
 

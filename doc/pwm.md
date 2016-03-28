@@ -13,7 +13,7 @@ The following options are supported:
 - period - period in nannoseconds (optional, default 500000 nanoseconds)
 - duty - duty in nanoseconds (optional, default 0 nanoseconds)
 - enabled - true or false (optional, default true)
-- polarity - Pwm.LOW or Pwm.HIGH (optional, default Pwm.LOW)
+- polarity - Pwm.NORMAL or Pwm.INVERSED (optional, default Pwm.NORMAL)
 
 ### Method: period(value)
 - value - period in nannoseconds (optional)
@@ -46,9 +46,9 @@ Returns a boolean specifying whether or not the PWM is enabled, if no value is
 specified, else enables or disables the PWM depending on the value specified.
 
 ### Method: polarity(value)
-- value - Pwm.LOW or Pwm.HIGH (optional)
+- value - Pwm.NORMAL or Pwm.INVERSED (optional)
 
-Returns Pwm.LOW or Pwm.HIGH specifying the polarity of the PWM, if no value is
+Returns Pwm.NORMAL or Pwm.INVERSED specifying the polarity of the PWM, if no value is
 specified, else sets the polarity to the specified value.
 
 ### Event: 'ready'

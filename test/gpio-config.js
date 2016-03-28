@@ -4,7 +4,7 @@ var assert = require('assert'),
   bot = require('../'),
   pullTypes = bot.pullTypes,
   Gpio = bot.Gpio,
-  gpio = new Gpio(bot.pins.p8_07, {
+  gpio = new Gpio(bot.pins.p8_14, {
     direction: Gpio.IN,
     pullType: pullTypes.PULL_UP
   });

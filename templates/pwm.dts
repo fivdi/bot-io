@@ -25,14 +25,10 @@
     target = <&ocp>;
     __overlay__ {
       {{ name }} {
-        compatible = "pwm_test";
-        pwms = <&{{ module }} {{ channel }} {{ period }} {{ polarity }}>;
-        pwm-names = "{{ name }}";
+        compatible = "bone-pinmux-helper";
+        status = "okay";
         pinctrl-names = "default";
         pinctrl-0 = <&{{ name }}_pins>;
-        enabled = <{{ enabled }}>;
-        duty = <{{ duty }}>;
-        status = "okay";
       };
     };
   };

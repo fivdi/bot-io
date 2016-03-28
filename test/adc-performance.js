@@ -8,7 +8,7 @@ function test() {
     opsPerSec,
     ops;
 
-  for (ops = 0; ops !== 3000; ops += 1) {
+  for (ops = 0; ops !== 15000; ops += 1) {
     ain.rawValue();
   }
 

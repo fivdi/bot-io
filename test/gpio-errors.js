@@ -5,7 +5,7 @@ var assert = require('assert'),
   Gpio = bot.Gpio,
   pullTypes = bot.pullTypes,
   gpioBad = new Gpio(bot.pins.p9_36), // p9_36 doesn't support pwm, expect error
-  gpioGood = new Gpio(bot.pins.p8_07, { // p8_07 supports gpio, should work
+  gpioGood = new Gpio(bot.pins.p8_14, { // p8_14 supports gpio, should work
     direction: Gpio.IN,
     pullType: pullTypes.PULL_UP
   });

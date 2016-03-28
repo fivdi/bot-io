@@ -1,0 +1,29 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+  part-number = "{{ partNumber }}";
+  version = "{{ version }}";
+
+  exclusive-use =
+    "P9.39", /* AIN0 */
+    "P9.40", /* AIN1 */
+    "P9.37", /* AIN2 */
+    "P9.38", /* AIN3 */
+    "P9.33", /* AIN4 */
+    "P9.36", /* AIN5 */
+    "P9.35", /* AIN6 */
+    "tscadc";
+
+  fragment@0 {
+    target = <&tscadc>;
+    __overlay__ {
+      status = "okay";
+      adc {
+        ti,adc-channels = <0 1 2 3 4 5 6>;
+      };
+    };
+  };
+};
+

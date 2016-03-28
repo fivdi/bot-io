@@ -1,11 +1,6 @@
 ## bot-io
 
-ADC, GPIO, PWM, UARTs, and more with **io.js** or **Node.js** on the BeagleBone
-Black.
-
-## Installation
-
-    $ npm install bot-io
+ADC, GPIO, PWM, UARTs, and more with **Node.js** on the BeagleBone Black.
 
 ## Features
 
@@ -15,6 +10,23 @@ Black.
  * GPIO - General Purpose Input Output
  * PWM - Pulse Width Modulation
  * UART - Serial Communication
+
+## Installation
+
+    $ npm install bot-io
+
+## News & Updates
+
+### bot-io v1.0.0 - March 28th 2016
+
+bot-io v1.0.0 dropped support for the 3.8.x kernel and added support for the
+4.1.x kernel. bot-io v0.1.1 was the last version of bot-io that supported the
+3.8.x kernel.
+
+ * The Ain rawValue() method used to return a millivolt value in the range 0 to 1800. Now it returns a value in the range 0 to 4095.
+ * Ain constructor option vsenseScale was removed.
+ * The Pwm constant LOW used to be used to represent normal polarity PWM. Now the Pwm constant NORMAL should be used for this purpose.
+ * The Pwm constant HIGH used to be used to represent inversed polarity PWM. Now the Pwm constant INVERSED should be used for this purpose.
 
 ## Usage
 
@@ -29,17 +41,15 @@ var bot = require('bot-io'),
   led0 = new bot.Led(bot.Led.USR0);
 
 led0.once('ready', function () {
-  // Blink at 1Hz. Cycle = 1000ms, on for 500ms, off for 500ms.
+  // Blink at 1Hz. Period = 1000ms, on for 500ms, off for 500ms.
   led0.blink();
 });
 ```
 
-The next example blinks all four onboard user LEDs at 100Hz. Every 250ms the
-blink delays are adjusted. The LEDs will alternate between glowing dimly and
-brightly.
+The next example heartbeats all four onboard user LEDs at 100Hz.
 
 ```js
-var bot = require('bot-io'),
+var bot = require('../'),
   Led = bot.Led,
   leds;
 
@@ -48,20 +58,9 @@ leds = [Led.USR0, Led.USR1, Led.USR2, Led.USR3].map(function (usrledName) {
 });
 
 bot.once('ready', leds, function () {
-  var blinkLeds = function (delayOn, delayOff) {
-    leds.forEach(function (led) {
-      led.blink(delayOn, delayOff);
-    });
-  };
-
-  setInterval(function () {
-    // Blink at 100Hz. Cycle = 10ms, on for 1ms, off for 9ms.
-    blinkLeds(1, 9);
-    setTimeout(function () {
-      // Blink at 100Hz. Cycle = 10ms, on for 9ms, off for 1ms.
-      blinkLeds(9, 1);
-    }, 250);
-  }, 500);
+  leds.forEach(function (led) {
+    led.heartbeat();
+  });
 });
 ```
 
@@ -153,6 +152,5 @@ ain.once('ready', function () {
 
 Tested on a BeagleBone Black rev. A5C with
 
- * Debian Image 2014-09-03 and Node.js v0.10.25
- * Debian Image 2015-03-01 and io.js v2.3.2
+ * Debian Jessie 8.3 2016-03-20, Kernel 4.1.18-ti-r53, and Node.js v0.12.12
 

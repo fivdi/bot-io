@@ -2,23 +2,25 @@
 
 var bot = require('../'),
   Gpio = bot.Gpio,
-  gpio = new Gpio(bot.pins.p8_07, {
+  output = new Gpio(bot.pins.p8_15),
+  input = new Gpio(bot.pins.p8_16, {
+    direction: Gpio.IN,
     edge: Gpio.BOTH
   });
 
-gpio.once('ready', function () {
+bot.once('ready', [output, input], function () {
   var time,
     rising = 0,
     falling = 0;
 
-  gpio.on('rising', function () {
+  input.on('rising', function () {
     rising += 1;
-    gpio.value(0);
+    output.value(0);
   });
 
-  gpio.on('falling', function () {
+  input.on('falling', function () {
     falling += 1;
-    gpio.value(1);
+    output.value(1);
   });
 
   setTimeout(function () {
@@ -30,11 +32,11 @@ gpio.once('ready', function () {
     console.log('ok - ' + __filename);
     console.log('     ' + interruptsPerSec + ' interrupts per second');
 
-    gpio.edge(Gpio.NONE);
+    input.edge(Gpio.NONE);
   }, 5000);
 
   time = process.hrtime();
 
-  gpio.value(1);
+  output.value(1);
 });
 

@@ -22,7 +22,7 @@
   };
 
   fragment@1 {
-    target = <&ocp>;
+    target-path = "/";
     __overlay__ {
       {{ name }} {
         compatible = "gpio-leds";
@@ -31,7 +31,7 @@
 
         {{ name }}_gpio {
           label = "{{ label }}";
-          gpios = <&gpio{{ gpioBankPlusOne }} {{ gpioOffset }} {{ isActiveLow }}>;
+          gpios = <&gpio{{ gpioBank }} {{ gpioOffset }} {{ isActiveLow }}>;
           linux,default-trigger = "none";
           default-state = "off";
         };
