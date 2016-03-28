@@ -20,13 +20,24 @@ ADC, GPIO, PWM, UARTs, and more with **Node.js** on the BeagleBone Black.
 ### bot-io v1.0.0 - March 28th 2016
 
 bot-io v1.0.0 dropped support for the 3.8.x kernel and added support for the
-4.1.x kernel. bot-io v0.1.1 was the last version of bot-io that supported the
-3.8.x kernel.
+4.1.x-ti kernel. bot-io v0.1.1 was the last version of bot-io that supported
+the 3.8.x kernel. All versions of bot-io require cape manager support.
 
- * The Ain rawValue() method used to return a millivolt value in the range 0 to 1800. Now it returns a value in the range 0 to 4095.
- * Ain constructor option vsenseScale was removed.
- * The Pwm constant LOW used to be used to represent normal polarity PWM. Now the Pwm constant NORMAL should be used for this purpose.
- * The Pwm constant HIGH used to be used to represent inversed polarity PWM. Now the Pwm constant INVERSED should be used for this purpose.
+For further information about breaking changes introduced with v1.0.0 see
+[Migrating from bot-io v0.1.1 to v1.0.0](https://github.com/fivdi/bot-io/wiki/Migrating-from-bot-io-v0.1.1-to-v1.0.0)
+
+Note that cape_universal should be disabled when using bot-io. This can be
+achieved by editing /boot/uEnv.txt and modifing the following line
+
+```
+cmdline=coherent_pool=1M quiet cape_universal=enable
+```
+
+to 
+
+```
+cmdline=coherent_pool=1M quiet
+```
 
 ## Usage
 
