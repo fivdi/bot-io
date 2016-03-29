@@ -10,6 +10,9 @@ buttons.forEach(function (button) {
   button.on('pressed', function () {
     console.log('pressed: ' + button.name);
   });
+  button.on('held', function () {
+    console.log('held: ' + button.name);
+  });
   button.on('released', function () {
     console.log('released: ' + button.name);
   });

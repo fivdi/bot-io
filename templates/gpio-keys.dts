@@ -33,6 +33,7 @@
         pinctrl-0 = <&{{ name }}_pins>;
         #address-cells = <1>;
         #size-cells = <0>;
+        autorepeat;
 
         {{ name }}_gpio {
           label = "{{ label }}";

@@ -1,3 +1,10 @@
+Unpublished
+===========
+
+  * held event for buttons
+  * pressed, held, and released methods for buttons
+
+
 1.0.1 / Mar 29 2016
 ===================
 
