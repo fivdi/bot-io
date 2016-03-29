@@ -14,72 +14,64 @@ static const char PARITY_ODD[] = "odd";
 static const char PARITY_EVEN[] = "even";
 
 NAN_METHOD(GetBaudRate) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to getBaudRate(int fd)"
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "getBaudRate",
+      "incorrect arguments passed to getBaudRate(int fd)")
     );
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   speed_t baudRate = cfgetospeed(&tio);
 
-  NanReturnValue(NanNew<v8::Number>(baudRate));
+  info.GetReturnValue().Set(baudRate);
 }
 
 NAN_METHOD(SetBaudRate) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to setBaudRate(int fd, int baudRate)"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setBaudRate",
+      "incorrect arguments passed to setBaudRate(int fd, int baudRate)")
     );
   }
 
-  int fd = args[0]->Int32Value();
-  size_t baudRate = args[1]->Int32Value();
+  int fd = info[0]->Int32Value();
+  size_t baudRate = info[1]->Int32Value();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   if (cfsetospeed(&tio, baudRate)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   if (cfsetispeed(&tio, baudRate)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(GetCharacterSize) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to getCharacterSize(int fd)"
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "getCharacterSize",
+      "incorrect arguments passed to getCharacterSize(int fd)")
     );
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   int size = 0;
@@ -99,30 +91,28 @@ NAN_METHOD(GetCharacterSize) {
       break;
   }
 
-  NanReturnValue(NanNew<v8::Number>(size));
+  info.GetReturnValue().Set(size);
 }
 
 NAN_METHOD(SetCharacterSize) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to setCharacterSize(int fd, int size)"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setCharacterSize",
+      "incorrect arguments passed to setCharacterSize(int fd, int size)")
     );
   }
 
-  int fd = args[0]->Int32Value();
-  size_t size = args[1]->Int32Value();
+  int fd = info[0]->Int32Value();
+  size_t size = info[1]->Int32Value();
 
   if (size < 5 || size > 8) {
-    return NanThrowError(
-      "setCharacterSize(int fd, int size) expects size to be 5, 6, 7, or 8"
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setCharacterSize",
+      "setCharacterSize(int fd, int size) expects size to be 5, 6, 7, or 8")
     );
   }
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   tio.c_cflag &= ~CSIZE;
@@ -143,53 +133,48 @@ NAN_METHOD(SetCharacterSize) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(GetParity) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to getParity(int fd)"
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "getParity",
+      "incorrect arguments passed to getParity(int fd)")
     );
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   if (tio.c_cflag & PARENB) {
     if (tio.c_cflag & PARODD) {
-      NanReturnValue(NanNew<v8::String>(PARITY_ODD));
+      info.GetReturnValue().Set(Nan::New(PARITY_ODD).ToLocalChecked());
+    } else {
+      info.GetReturnValue().Set(Nan::New(PARITY_EVEN).ToLocalChecked());
     }
-    NanReturnValue(NanNew<v8::String>(PARITY_EVEN));
+  } else {
+    info.GetReturnValue().Set(Nan::New(PARITY_NONE).ToLocalChecked());
   }
-
-  NanReturnValue(NanNew<v8::String>(PARITY_NONE));
 }
 
 NAN_METHOD(SetParity) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsString()) {
-    return NanThrowError(
-      "incorrect arguments passed to setParity(int fd, char[] type)"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsString()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setParity",
+      "incorrect arguments passed to setParity(int fd, char[] type)")
     );
   }
 
-  int fd = args[0]->Int32Value();
-  NanUtf8String type(args[1]);
+  int fd = info[0]->Int32Value();
+  Nan::Utf8String type(info[1]);
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   if (strcmp(*type, PARITY_NONE) == 0) {
@@ -201,32 +186,28 @@ NAN_METHOD(SetParity) {
     tio.c_cflag |= PARENB;
     tio.c_cflag &= ~PARODD;
   } else {
-    return NanThrowError(
-      "setParity(int fd, char[] type) expects type to be \"none\", \"odd\", or \"even\""
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setParity",
+      "setParity(int fd, char[] type) expects type to be \"none\", \"odd\", or \"even\"")
     );
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(GetStopBits) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to setStopBits(int fd)"
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "getStopBits",
+      "incorrect arguments passed to getStopBits(int fd)")
     );
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   int count = 1;
@@ -235,30 +216,28 @@ NAN_METHOD(GetStopBits) {
     count = 2;
   }
 
-  NanReturnValue(NanNew<v8::Number>(count));
+  info.GetReturnValue().Set(count);
 }
 
 NAN_METHOD(SetStopBits) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to setStopBits(int fd, int count)"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setStopBits",
+      "incorrect arguments passed to setStopBits(int fd, int count)")
     );
   }
 
-  int fd = args[0]->Int32Value();
-  size_t count = args[1]->Int32Value();
+  int fd = info[0]->Int32Value();
+  size_t count = info[1]->Int32Value();
 
   if (count < 1 || count > 2) {
-    return NanThrowError(
-      "setStopBits(int fd, int count) expects count to be 1 or 2"
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setStopBits",
+      "setStopBits(int fd, int count) expects count to be 1 or 2")
     );
   }
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   switch (count) {
@@ -271,52 +250,44 @@ NAN_METHOD(SetStopBits) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(SetRawMode) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to setRawMode(int fd)"
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setRawMode",
+      "incorrect arguments passed to setRawMode(int fd)")
     );
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   cfmakeraw(&tio);
 
   if (tcsetattr(fd, TCSADRAIN, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(SetCanonical) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsBoolean()) {
-    return NanThrowError(
-      "incorrect arguments passed to setCanonical(int fd, bool canonical)"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsBoolean()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setCanonical",
+      "incorrect arguments passed to setCanonical(int fd, bool canonical)")
     );
   }
 
-  int fd = args[0]->Int32Value();
-  bool canonical = args[1]->IsTrue();
+  int fd = info[0]->Int32Value();
+  bool canonical = info[1]->IsTrue();
 
   struct termios tio;
   if (tcgetattr(fd, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
 
   if (canonical) {
@@ -326,112 +297,106 @@ NAN_METHOD(SetCanonical) {
   }
 
   if (tcsetattr(fd, TCSANOW, &tio)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
 NAN_METHOD(FakeInput) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError(
-      "incorrect arguments passed to fakeInput(int fd, int ch)"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setCanonical",
+      "incorrect arguments passed to fakeInput(int fd, int ch)")
     );
   }
 
-  int fd = args[0]->Int32Value();
-  char ch = args[1]->Int32Value();
+  int fd = info[0]->Int32Value();
+  char ch = info[1]->Int32Value();
 
   if (ioctl(fd, TIOCSTI, &ch)) {
-    return NanThrowError(strerror(errno), errno);
+    return Nan::ThrowError(Nan::ErrnoException(errno, strerror(errno), ""));
   }
-
-  NanReturnUndefined();
 }
 
-void Init(v8::Handle<v8::Object> exports) {
-  exports->Set(NanNew<v8::String>("B0"), NanNew<v8::Number>(B0));
-  exports->Set(NanNew<v8::String>("B50"), NanNew<v8::Number>(B50));
-  exports->Set(NanNew<v8::String>("B75"), NanNew<v8::Number>(B75));
-  exports->Set(NanNew<v8::String>("B110"), NanNew<v8::Number>(B110));
-  exports->Set(NanNew<v8::String>("B134"), NanNew<v8::Number>(B134));
-  exports->Set(NanNew<v8::String>("B150"), NanNew<v8::Number>(B150));
-  exports->Set(NanNew<v8::String>("B200"), NanNew<v8::Number>(B200));
-  exports->Set(NanNew<v8::String>("B300"), NanNew<v8::Number>(B300));
-  exports->Set(NanNew<v8::String>("B600"), NanNew<v8::Number>(B600));
-  exports->Set(NanNew<v8::String>("B1200"), NanNew<v8::Number>(B1200));
-  exports->Set(NanNew<v8::String>("B1800"), NanNew<v8::Number>(B1800));
-  exports->Set(NanNew<v8::String>("B2400"), NanNew<v8::Number>(B2400));
-  exports->Set(NanNew<v8::String>("B4800"), NanNew<v8::Number>(B4800));
-  exports->Set(NanNew<v8::String>("B9600"), NanNew<v8::Number>(B9600));
-  exports->Set(NanNew<v8::String>("B19200"), NanNew<v8::Number>(B19200));
-  exports->Set(NanNew<v8::String>("B38400"), NanNew<v8::Number>(B38400));
-  exports->Set(NanNew<v8::String>("B57600"), NanNew<v8::Number>(B57600));
-  exports->Set(NanNew<v8::String>("B115200"), NanNew<v8::Number>(B115200));
-  exports->Set(NanNew<v8::String>("B230400"), NanNew<v8::Number>(B230400));
-  exports->Set(NanNew<v8::String>("B460800"), NanNew<v8::Number>(B460800));
-  exports->Set(NanNew<v8::String>("B500000"), NanNew<v8::Number>(B500000));
-  exports->Set(NanNew<v8::String>("B576000"), NanNew<v8::Number>(B576000));
-  exports->Set(NanNew<v8::String>("B921600"), NanNew<v8::Number>(B921600));
-  exports->Set(NanNew<v8::String>("B1000000"), NanNew<v8::Number>(B1000000));
-  exports->Set(NanNew<v8::String>("B1152000"), NanNew<v8::Number>(B1152000));
-  exports->Set(NanNew<v8::String>("B1500000"), NanNew<v8::Number>(B1500000));
-  exports->Set(NanNew<v8::String>("B2000000"), NanNew<v8::Number>(B2000000));
-  exports->Set(NanNew<v8::String>("B2500000"), NanNew<v8::Number>(B2500000));
-  exports->Set(NanNew<v8::String>("B3000000"), NanNew<v8::Number>(B3000000));
-  exports->Set(NanNew<v8::String>("B3500000"), NanNew<v8::Number>(B3500000));
-  exports->Set(NanNew<v8::String>("B4000000"), NanNew<v8::Number>(B4000000));
+static void SetConst(
+  Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE target,
+  const char* name,
+  int value
+) {
+  Nan::Set(target,
+    Nan::New<v8::String>(name).ToLocalChecked(),
+    Nan::New<v8::Integer>(value)
+  );
+}
 
-  exports->Set(NanNew<v8::String>("PARITY_NONE"), NanNew<v8::String>(PARITY_NONE));
-  exports->Set(NanNew<v8::String>("PARITY_ODD"), NanNew<v8::String>(PARITY_ODD));
-  exports->Set(NanNew<v8::String>("PARITY_EVEN"), NanNew<v8::String>(PARITY_EVEN));
+static void SetConst(
+  Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE target,
+  const char* name,
+  const char* value
+) {
+  Nan::Set(target,
+    Nan::New<v8::String>(name).ToLocalChecked(),
+    Nan::New<v8::String>(value).ToLocalChecked()
+  );
+}
 
-  exports->Set(
-    NanNew<v8::String>("getBaudRate"),
-    NanNew<v8::FunctionTemplate>(GetBaudRate)->GetFunction()
+static void SetFunction(
+  Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE target,
+  const char* name,
+  Nan::FunctionCallback callback
+) {
+  Nan::Set(target,
+    Nan::New(name).ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(callback)).ToLocalChecked()
   );
-  exports->Set(
-    NanNew<v8::String>("setBaudRate"),
-    NanNew<v8::FunctionTemplate>(SetBaudRate)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("getCharacterSize"),
-    NanNew<v8::FunctionTemplate>(GetCharacterSize)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("setCharacterSize"),
-    NanNew<v8::FunctionTemplate>(SetCharacterSize)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("getParity"),
-    NanNew<v8::FunctionTemplate>(GetParity)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("setParity"),
-    NanNew<v8::FunctionTemplate>(SetParity)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("getStopBits"),
-    NanNew<v8::FunctionTemplate>(GetStopBits)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("setStopBits"),
-    NanNew<v8::FunctionTemplate>(SetStopBits)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("setRawMode"),
-    NanNew<v8::FunctionTemplate>(SetRawMode)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("setCanonical"),
-    NanNew<v8::FunctionTemplate>(SetCanonical)->GetFunction()
-  );
-  exports->Set(
-    NanNew<v8::String>("fakeInput"),
-    NanNew<v8::FunctionTemplate>(FakeInput)->GetFunction()
-  );
+}
+
+NAN_MODULE_INIT(Init) {
+  SetConst(target, "B0", B0);
+  SetConst(target, "B50", B50);
+  SetConst(target, "B75", B75);
+  SetConst(target, "B110", B110);
+  SetConst(target, "B134", B134);
+  SetConst(target, "B150", B150);
+  SetConst(target, "B200", B200);
+  SetConst(target, "B300", B300);
+  SetConst(target, "B600", B600);
+  SetConst(target, "B1200", B1200);
+  SetConst(target, "B1800", B1800);
+  SetConst(target, "B2400", B2400);
+  SetConst(target, "B4800", B4800);
+  SetConst(target, "B9600", B9600);
+  SetConst(target, "B19200", B19200);
+  SetConst(target, "B38400", B38400);
+  SetConst(target, "B57600", B57600);
+  SetConst(target, "B115200", B115200);
+  SetConst(target, "B230400", B230400);
+  SetConst(target, "B460800", B460800);
+  SetConst(target, "B500000", B500000);
+  SetConst(target, "B576000", B576000);
+  SetConst(target, "B921600", B921600);
+  SetConst(target, "B1000000", B1000000);
+  SetConst(target, "B1152000", B1152000);
+  SetConst(target, "B1500000", B1500000);
+  SetConst(target, "B2000000", B2000000);
+  SetConst(target, "B2500000", B2500000);
+  SetConst(target, "B3000000", B3000000);
+  SetConst(target, "B3500000", B3500000);
+  SetConst(target, "B4000000", B4000000);
+
+  SetConst(target, "PARITY_NONE", PARITY_NONE);
+  SetConst(target, "PARITY_ODD", PARITY_ODD);
+  SetConst(target, "PARITY_EVEN", PARITY_EVEN);
+
+  SetFunction(target, "getBaudRate", GetBaudRate);
+  SetFunction(target, "setBaudRate", SetBaudRate);
+  SetFunction(target, "getCharacterSize", GetCharacterSize);
+  SetFunction(target, "setCharacterSize", SetCharacterSize);
+  SetFunction(target, "getParity", GetParity);
+  SetFunction(target, "setParity", SetParity);
+  SetFunction(target, "getStopBits", GetStopBits);
+  SetFunction(target, "setStopBits", SetStopBits);
+  SetFunction(target, "setRawMode", SetRawMode);
+  SetFunction(target, "setCanonical", SetCanonical);
+  SetFunction(target, "fakeInput", FakeInput);
 }
 
 NODE_MODULE(serialutil, Init)
