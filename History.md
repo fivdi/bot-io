@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.0.1 / Mar 29 2016
+===================
 
   * nan2 migration for node v4+ support
 
