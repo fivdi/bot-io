@@ -1,7 +1,7 @@
 {
   "name": "bot-io",
   "description": "ADC, GPIO, PWM, UARTs, and more on the BeagleBone Black.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "fivdi",
   "keywords": [
     "beaglebone",
