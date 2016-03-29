@@ -6,7 +6,9 @@ P9_24 will be pulled high as the internal pull-up resistor for
 P9_24 will be enabled. Although the 1kΩ resistor isn't strictly necessary,
 it will protect the BeagleBone if P9_24 is ever configured as an output,
 set high, and someone presses the button. Without the 1kΩ resistor this
-would result in a short circut.
+would result in a short circut.  ***Please Note:*** *This example uses one button.  By default you may use up to 4 buttons without the need to specifiy additional threads.  If you would like to use for example 10 buttons then you need to set the max threads when calling your app like this:* <br>``` UV_THREADPOOL_SIZE=10 node app.js```
+
+
 
 <img src="https://github.com/fivdi/bot-io/raw/master/doc/button.png">
 
